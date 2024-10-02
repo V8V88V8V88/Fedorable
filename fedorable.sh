@@ -10,16 +10,16 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 print_message "Updating package list"
-dnf check-update
+dnf5 check-upgrade
 
 print_message "Removing unused packages and dependencies"
-dnf autoremove -y
+dnf5 autoremove -y
 
 print_message "Cleaning DNF cache"
-dnf clean all
+dnf5 clean all
 
 print_message "Removing old kernels"
-dnf remove $(dnf repoquery --installonly --latest-limit=-2 -q)
+dnf5 remove $(dnf5 repoquery --installonly --latest-limit=-2 -q)
 
 print_message "Cleaning user cache"
 rm -rf /home/*/.cache/*
@@ -31,6 +31,6 @@ print_message "Removing temporary files"
 rm -rf /tmp/*
 
 print_message "Removing orphaned packages"
-dnf list leaf | xargs dnf remove -y
+dnf5 remove $(dnf5 leaves) -y
 
 print_message "Cleanup completed!"
