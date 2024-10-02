@@ -1,47 +1,75 @@
-# Fedora Cleanup Script
+# 🧹 Fedorable: Fedora Cleaning Script
 
-This script automates the process of cleaning up and maintaining a Fedora Linux system. It removes unnecessary packages, cleans caches, and performs other system maintenance tasks.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Fedora Version](https://img.shields.io/badge/Fedora-41+-blue.svg)](https://getfedora.org/)
 
-## Features
+Fedorable is a command-line utility designed to maintain and optimize your Fedora Linux system. It automates common cleanup tasks to keep your Fedora installation efficient and well-maintained.
 
-- Updates package list
-- Removes unused packages and dependencies
-- Cleans DNF cache
-- Removes old kernels (keeps current and one previous version)
-- Cleans user cache
-- Cleans system journal
-- Removes temporary files
-- Removes orphaned packages
+## ✨ Features
 
-## Requirements
+- **DNF5 Integration**: Utilizes the full capabilities of DNF5
+- **Comprehensive Cleaning**: Manages package caches, old kernels, and more
+- **System Safety**: Implements non-destructive operations with clear feedback
+- **Performance Optimization**: Improves system efficiency through targeted cleanup tasks
 
-- Fedora Linux (tested on Fedora 40 with GNOME 46)
-- Root or sudo access
+## 🧼 Cleanup Tasks
 
-## Usage
+Fedorable performs the following cleanup operations:
 
-1. Save the script to a file (e.g., `fedora_cleanup.sh`)
+1. **Package List Update**: Refreshes the list of available packages.
+2. **Unused Package Removal**: Removes packages that were automatically installed as dependencies but are no longer required.
+3. **DNF Cache Cleaning**: Clears the DNF cache to free up disk space.
+4. **Old Kernel Removal**: Removes old kernel versions, keeping only the current and one previous version.
+5. **User Cache Cleaning**: Clears user-specific cache files from `/home/*/.cache/`.
+6. **System Journal Cleanup**: Removes old systemd journal logs.
+7. **Temporary File Removal**: Clears temporary files from `/tmp/`.
+8. **Orphaned Package Removal**: Removes packages that are no longer part of any repository.
+
+## 🛠 Installation
+
+1. Clone this repository:
+   ```
+   git clone https://github.com/yourusername/fedorable.git
+   cd fedorable
+   ```
+
 2. Make the script executable:
    ```
-   chmod +x fedora_cleanup.sh
-   ```
-3. Run the script with sudo:
-   ```
-   sudo ./fedora_cleanup.sh
+   chmod +x fedorable.sh
    ```
 
-## Warning
+## 🚀 Usage
 
-This script removes files and packages from your system. While it's designed to be safe, it's recommended to review the script and understand its actions before running it. Consider backing up important data before executing system-wide cleanup operations.
+Execute the script with sudo privileges:
 
-## Customization
+```
+sudo ./fedorable.sh
+```
 
-You can modify the script to add or remove cleanup tasks according to your needs. Each task is clearly labeled with a descriptive message.
+The script will guide you through the cleaning process, providing feedback at each step.
 
-## Contributing
+## 🔧 Customization
 
-Feel free to fork this script and submit pull requests for any improvements or additional features you think would be beneficial.
+To customize the cleanup process, edit `fedorable.sh` in your preferred text editor. You can modify, add, or remove cleaning tasks as needed.
 
-## License
+## 🤝 Contributing
 
-This script is released under the MIT License. See the LICENSE file for details.
+Contributions are welcome, including bug reports, feature requests, and pull requests. Please refer to our [contribution guidelines](CONTRIBUTING.md) for more information.
+
+## 🔒 Security
+
+This script performs system-wide operations. Always review scripts that require sudo privileges before execution. While we prioritize system safety, user discretion is advised.
+
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙌 Acknowledgements
+
+- The Fedora community
+- The DNF team for their robust package management tool
+- All users and contributors of this project
+
+---
+
+Enhance your Fedora system's performance with Fedorable. If you find this tool useful, please consider starring ⭐ the repository.
