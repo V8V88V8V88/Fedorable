@@ -34,6 +34,7 @@ ask_yes_no() {
 show_menu() {
     clear
     echo -e "${GREEN}=== Fedorable System Maintenance Tool ===${NC}"
+    echo "Available tasks:"
     echo "1. Backup System Configurations"
     echo "2. Update System"
     echo "3. System Cleanup"
@@ -42,10 +43,13 @@ show_menu() {
     echo "6. Run All Tasks"
     echo "0. Exit"
     echo
-    read -p "Choose an option [0-6]: " choice
+    echo "You can select multiple tasks using comma-separated numbers (e.g., 2,4,5)"
+    echo
+    read -p "Enter your choice(s): " choices
 }
 
 backup_system_config() {
+    log_message "info" "Starting system backup..."
     BACKUP_DIR="/root/system_backup_$(date +%Y%m%d)"
     mkdir -p "$BACKUP_DIR"
     configs=(
@@ -64,7 +68,7 @@ backup_system_config() {
 }
 
 update_system() {
-    log_message "info" "Checking for updates"
+    log_message "info" "Starting system update..."
     dnf check-upgrade
     if ask_yes_no "Proceed with system upgrade?"; then
         dnf upgrade -y
@@ -72,6 +76,7 @@ update_system() {
 }
 
 cleanup_system() {
+    log_message "info" "Starting system cleanup..."
     if ask_yes_no "Remove unused packages and dependencies?"; then
         dnf autoremove -y
     fi
@@ -86,6 +91,7 @@ cleanup_system() {
 }
 
 cleanup_user_data() {
+    log_message "info" "Starting user data cleanup..."
     if ask_yes_no "Clean user cache directories?"; then
         find /home/ -type f -name '.thumbnails' -exec rm -rf {} +
         find /home/ -type f -name '.cache' -exec rm -rf {} +
@@ -97,6 +103,7 @@ cleanup_user_data() {
 }
 
 optimize_system() {
+    log_message "info" "Starting system optimization..."
     if ask_yes_no "Update GRUB configuration?"; then
         grub2-mkconfig -o /boot/grub2/grub.cfg
     fi
@@ -108,34 +115,51 @@ optimize_system() {
     fi
 }
 
-run_all_tasks() {
-    log_message "info" "Running all maintenance tasks..."
-    backup_system_config
-    update_system
-    cleanup_system
-    cleanup_user_data
-    optimize_system
+run_task() {
+    local task=$1
+    case $task in
+        1) backup_system_config ;;
+        2) update_system ;;
+        3) cleanup_system ;;
+        4) cleanup_user_data ;;
+        5) optimize_system ;;
+        6) 
+            backup_system_config
+            update_system
+            cleanup_system
+            cleanup_user_data
+            optimize_system
+            ;;
+        0) return 1 ;;
+        *) log_message "error" "Invalid task number: $task" ;;
+    esac
+    return 0
 }
 
 main() {
     [ "$EUID" -ne 0 ] && { log_message "error" "Please run as root or using sudo."; exit 1; }
     set -euo pipefail
 
-    while true; do
-        show_menu
-        case $choice in
-            1) backup_system_config ;;
-            2) update_system ;;
-            3) cleanup_system ;;
-            4) cleanup_user_data ;;
-            5) optimize_system ;;
-            6) run_all_tasks ;;
-            0) log_message "info" "Exiting..."; exit 0 ;;
-            *) log_message "error" "Invalid option" ;;
-        esac
+    show_menu
+    
+    if [[ $choices == "0" ]]; then
+        log_message "info" "Exiting..."
+        exit 0
+    fi
+
+    IFS=',' read -ra selected_tasks <<< "$choices"
+    
+    for task in "${selected_tasks[@]}"; do
+        task=$(echo "$task" | tr -d ' ')
+        if ! run_task "$task"; then
+            break
+        fi
         echo
-        read -p "Press Enter to continue..."
     done
+
+    log_message "info" "All selected tasks completed!"
+    echo "Disk space usage:"
+    df -h /
 }
 
 main
