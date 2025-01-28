@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Fedorable
+Comment=System Maintenance Tool
+Type=Application
+Exec=pkexec fedorable-gui
+Icon=system-software-install
+Categories=System;
+StartupNotify=true
