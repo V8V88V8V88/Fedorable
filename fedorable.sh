@@ -937,8 +937,6 @@ log_msg "Log File: $LOG_FILE"
 [[ $DRY_RUN -eq 1 ]] && log_warn "*** DRY RUN MODE ENABLED - NO CHANGES WILL BE MADE ***"
 
 # Load user config if it exists
-load_user_config
-
 log_msg "Effective Task Flags:"
 printf "  Timeshift: %d, Backup: %d, Update: %d, CheckOnly: %d, FirmwareUpdate: %d, Autoremove: %d, CleanDNF: %d, CleanKernels: %d\n" \
        "$PERFORM_TIMESHIFT" "$PERFORM_BACKUP" "$PERFORM_UPDATE" "$CHECK_ONLY" "$PERFORM_UPDATE_FIRMWARE" "$PERFORM_AUTOREMOVE" "$PERFORM_CLEAN_DNF" "$PERFORM_CLEAN_KERNELS" | tee -a "$LOG_FILE"
@@ -948,7 +946,6 @@ printf "  ResetFailedUnits: %d, UpdateFonts: %d, ClearHistory: %d, Trim: %d, Opt
        "$PERFORM_RESET_FAILED_UNITS" "$PERFORM_UPDATE_FONTS" "$PERFORM_CLEAR_HISTORY" "$PERFORM_TRIM" "$PERFORM_OPTIMIZE_FSTRIM" "$PERFORM_CLEAN_SNAP" "$PERFORM_UPDATE_MANDB" "$PERFORM_CHECK_SERVICES" | tee -a "$LOG_FILE"
 log_msg "Control Flags: ForceYes=$FORCE_YES, Quiet=$QUIET_MODE, DryRun=$DRY_RUN, EmailReport=$EMAIL_REPORT"
 [[ $EMAIL_REPORT -eq 1 ]] && log_msg "Email Recipient: $EMAIL_RECIPIENT, Subject: $EMAIL_SUBJECT"
-
 
 initial_disk_usage=$(df -h /)
 
