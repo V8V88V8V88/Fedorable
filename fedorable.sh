@@ -525,18 +525,7 @@ task_clean_coredumps() {
     print_header "System Coredump Cleanup"
     local coredump_dir="/var/lib/systemd/coredump"
 
-    if [[ $DRY_RUN -eq 1 ]]; then
-        local coredump_count=0
-        if [[ -d "$coredump_dir" ]]; then
-            coredump_count=$(find "$coredump_dir" -type f 2>/dev/null | wc -l)
-        fi
-        log_msg "[DRY RUN] Would remove $coredump_count files from $coredump_dir"
-        if check_command coredumpctl; then
-             log_msg "[DRY RUN] Would run 'coredumpctl clean'"
-        fi
-        return 0
-    fi
-
+    # ... (Dry run and manual deletion part remains the same) ...
     if [[ -d "$coredump_dir" ]]; then
         log_msg "Removing coredump files from $coredump_dir..."
         find "$coredump_dir" -type f -print -delete -exec log_msg "Deleted coredump: {}" \;
@@ -545,10 +534,16 @@ task_clean_coredumps() {
         log_msg "Coredump directory $coredump_dir not found."
     fi
 
+    # Check if coredumpctl exists and seems to support 'clean'
     if check_command coredumpctl; then
-        log_msg "Cleaning core dumps via coredumpctl..."
-        execute_if_not_dry_run "coredumpctl clean" "Clean coredumps via coredumpctl"
-        check_status "Clean coredumps via coredumpctl" || log_warn "coredumpctl clean reported issues."
+        # Check if help output contains the 'clean' command description
+        if coredumpctl --help | grep -q 'clean '; then
+            log_msg "Attempting to clean core dumps via coredumpctl clean..."
+            execute_if_not_dry_run "coredumpctl clean" "Clean coredumps via coredumpctl"
+            check_status "Clean coredumps via coredumpctl" || log_warn "coredumpctl clean reported issues."
+        else
+             log_msg "coredumpctl found, but 'clean' command does not appear supported on this version. Skipping coredumpctl clean."
+        fi
     fi
 }
 
