@@ -277,8 +277,10 @@ task_thumbnails
 systemctl() { echo enabled; }
 fstrim() { echo BAD_TRIM; }
 task_trim
+echo "skipped=$TASK_SKIPPED"
 ''')
         self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('skipped=1', result.stdout)
         self.assertIn('fstrim.timer', result.stdout)
         self.assertNotIn('BAD_TRIM', result.stdout)
 

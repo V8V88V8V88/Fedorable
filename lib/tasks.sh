@@ -115,8 +115,9 @@ task_coredumps() {
 
 task_trim() {
     if [[ $(systemctl is-enabled fstrim.timer 2>/dev/null) == enabled ]]; then
-        TASK_NOTE='Fedora already trims weekly with fstrim.timer; skipped.'
-        say "$TASK_NOTE"
+        TASK_NOTE='Fedora already trims weekly with fstrim.timer.'
+        TASK_SKIPPED=1
+        say "${YELLOW}Skipped: $TASK_NOTE${RESET}"
         return 0
     fi
     say "${DIM}TRIM can take a few minutes on large drives.${RESET}"
@@ -169,7 +170,7 @@ available_mib() {
 
 execute_tasks() {
     local task function_name rc done_count=0 failed_count=0 skipped_count=0 update_failed=0 index=0
-    local started=$SECONDS elapsed before='' after='' delta TASK_NOTE=''
+    local started=$SECONDS elapsed before='' after='' delta TASK_NOTE='' TASK_SKIPPED=0
     local -A result_states=() result_details=()
     (( DRY_RUN )) || before=$(available_mib) || before=''
     for task in "${SELECTED[@]}"; do
@@ -199,9 +200,13 @@ execute_tasks() {
         fi
         function_name=task_${task//-/_}
         rc=0
-        TASK_NOTE=''
+        TASK_NOTE='' TASK_SKIPPED=0
         "$function_name" || rc=$?
-        if (( rc == 0 )); then
+        if (( rc == 0 && TASK_SKIPPED )); then
+            skipped_count=$((skipped_count + 1))
+            result_states[$task]=SKIPPED
+            result_details[$task]=$TASK_NOTE
+        elif (( rc == 0 )); then
             done_count=$((done_count + 1))
             if (( DRY_RUN )); then
                 result_states[$task]=PREVIEW
