@@ -272,6 +272,16 @@ task_thumbnails
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn('systemd-tmpfiles --clean --prefix=/var/lib/systemd/coredump', result.stdout)
 
+    def test_trim_skips_when_weekly_timer_is_enabled(self):
+        result = shell('''
+systemctl() { echo enabled; }
+fstrim() { echo BAD_TRIM; }
+task_trim
+''')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('fstrim.timer', result.stdout)
+        self.assertNotIn('BAD_TRIM', result.stdout)
+
     def test_boot_report_is_read_only(self):
         result = shell('DRY_RUN=1; task_boot_report')
         self.assertEqual(result.returncode, 0, result.stderr)

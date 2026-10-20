@@ -113,7 +113,15 @@ task_coredumps() {
     run_command systemd-tmpfiles --clean --prefix=/var/lib/systemd/coredump
 }
 
-task_trim() { run_command fstrim --all --verbose; }
+task_trim() {
+    if [[ $(systemctl is-enabled fstrim.timer 2>/dev/null) == enabled ]]; then
+        TASK_NOTE='Fedora already trims weekly with fstrim.timer; skipped.'
+        say "$TASK_NOTE"
+        return 0
+    fi
+    say "${DIM}TRIM can take a few minutes on large drives.${RESET}"
+    run_command fstrim --all --verbose
+}
 task_boot_report() {
     run_command systemd-analyze time || return 1
     run_command systemd-analyze critical-chain --no-pager

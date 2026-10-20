@@ -139,6 +139,7 @@ In a normal terminal you get the animated blue logo while the menu waits for you
 - **Thumbnails:** only deletes files inside your own `~/.cache/thumbnails`, and runs as you rather than as root. Thumbnails are recreated as you browse. System accounts and unsafe home folders are refused.
 - **Coredumps:** follows systemd's expiry rules for `/var/lib/systemd/coredump`.
 - **Boot report:** only shows information and changes nothing.
+- **TRIM:** Fedora already runs `fstrim.timer` every week. If that timer is on, Fedorable skips TRIM instead of running a slow full TRIM again. If it's off, TRIM runs, and on a big SSD it can take a few minutes.
 - **Missing tools:** if Flatpak, `fstrim` or `systemd-analyze` isn't installed, that task is skipped. Any other missing tool counts as a failure.
 
 Real runs take a lock so two copies can't run at once, and they write a private log to `/var/log/fedorable/`. Any failure shows up in the summary and gives a nonzero exit code. Cleanup deletes data and there's no undo, so read the plan first, especially on a machine you rely on.
