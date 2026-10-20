@@ -97,6 +97,7 @@ task_clean_flatpak() { run_command flatpak --system uninstall --unused -y; }
 task_thumbnails() {
     local target_user=${SUDO_USER:-} passwd_entry uid user_home
     if [[ -z $target_user ]]; then target_user=$(logname 2>/dev/null) || target_user=''; fi
+    if [[ -z $target_user ]]; then TASK_NOTE='No desktop user found; thumbnails left alone.'; say "$TASK_NOTE"; return 0; fi
     [[ $target_user =~ ^[a-z_][a-z0-9_-]*$ ]] || { fail 'Could not identify the desktop user.'; return 1; }
     passwd_entry=$(getent passwd "$target_user") || { fail "Could not find user: $target_user"; return 1; }
     IFS=: read -r _ _ uid _ _ user_home _ <<< "$passwd_entry"
