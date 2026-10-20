@@ -4,16 +4,16 @@
 
 **An adorable Fedora maintenance script.**
 
-[![Fedora 44 | 45](https://img.shields.io/badge/Fedora-44%20%7C%2045-51A2DA?style=for-the-badge&logo=fedora&logoColor=white)](https://fedoraproject.org)
-[![Bash](https://img.shields.io/badge/Bash-4EAA25?style=for-the-badge&logo=gnubash&logoColor=white)](https://www.gnu.org/software/bash/)
-[![DNF5](https://img.shields.io/badge/DNF5-294172?style=for-the-badge&logo=fedora&logoColor=white)](https://github.com/rpm-software-management/dnf5)
-[![Flatpak](https://img.shields.io/badge/Flatpak-4A90D9?style=for-the-badge&logo=flatpak&logoColor=white)](https://flatpak.org)
-[![systemd](https://img.shields.io/badge/systemd-30D475?style=for-the-badge&logo=linux&logoColor=black)](https://systemd.io)
+[![Fedora 44 | 45](https://img.shields.io/badge/Fedora-44%20%7C%2045-51A2DA?style=plastic&logo=fedora&logoColor=white)](https://fedoraproject.org)
+[![Bash](https://img.shields.io/badge/Bash-4EAA25?style=plastic&logo=gnubash&logoColor=white)](https://www.gnu.org/software/bash/)
+[![DNF5](https://img.shields.io/badge/DNF5-294172?style=plastic&logo=fedora&logoColor=white)](https://github.com/rpm-software-management/dnf5)
+[![Flatpak](https://img.shields.io/badge/Flatpak-4A90D9?style=plastic&logo=flatpak&logoColor=white)](https://flatpak.org)
+[![systemd](https://img.shields.io/badge/systemd-30D475?style=plastic&logo=linux&logoColor=black)](https://systemd.io)
 
-[![Version](https://img.shields.io/badge/version-6.0.0-blue?style=flat-square)](https://github.com/V8V88V8V88/Fedorable/releases)
-[![Checks](https://img.shields.io/github/actions/workflow/status/V8V88V8V88/Fedorable/check.yml?branch=main&style=flat-square&label=checks)](https://github.com/V8V88V8V88/Fedorable/actions/workflows/check.yml)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
-[![Stars](https://img.shields.io/github/stars/V8V88V8V88/Fedorable?style=flat-square)](https://github.com/V8V88V8V88/Fedorable/stargazers)
+[![Version](https://img.shields.io/badge/version-6.0.0-blue?style=plastic)](https://github.com/V8V88V8V88/Fedorable/releases)
+[![Checks](https://img.shields.io/github/actions/workflow/status/V8V88V8V88/Fedorable/check.yml?branch=main&style=plastic&label=checks)](https://github.com/V8V88V8V88/Fedorable/actions/workflows/check.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green?style=plastic)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/V8V88V8V88/Fedorable?style=plastic)](https://github.com/V8V88V8V88/Fedorable/stargazers)
 
 <img src="docs/menu.png" alt="Fedorable main menu" width="720">
 
