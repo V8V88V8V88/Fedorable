@@ -4,7 +4,7 @@
 
 **An adorable Fedora maintenance script.**
 
-[![Fedora](https://img.shields.io/badge/Fedora-51A2DA?style=for-the-badge&logo=fedora&logoColor=white)](https://fedoraproject.org)
+[![Fedora 44 | 45](https://img.shields.io/badge/Fedora-44%20%7C%2045-51A2DA?style=for-the-badge&logo=fedora&logoColor=white)](https://fedoraproject.org)
 [![Bash](https://img.shields.io/badge/Bash-4EAA25?style=for-the-badge&logo=gnubash&logoColor=white)](https://www.gnu.org/software/bash/)
 [![DNF5](https://img.shields.io/badge/DNF5-294172?style=for-the-badge&logo=fedora&logoColor=white)](https://github.com/rpm-software-management/dnf5)
 [![Flatpak](https://img.shields.io/badge/Flatpak-4A90D9?style=for-the-badge&logo=flatpak&logoColor=white)](https://flatpak.org)
@@ -167,11 +167,20 @@ MIN_DISK_SPACE_MB=2048
 
 Write one `KEY=value` per line, with no quotes or shell code. Blank lines and `#` comments are fine. An unknown key or a bad value stops the run before anything happens. `KERNELS_TO_KEEP` can be 2 to 99, journal ages end in `d` or `w`, and sizes end in `M` or `G`. A config file is only read when you pass it with `--config`.
 
-## Compatibility
+## Supported Fedora versions
 
-Fedorable works on regular, DNF-based Fedora with Bash 4.4 or newer, coreutils, util-linux, RPM and systemd. Flatpak and `fstrim` are optional. Fedora Atomic desktops and CoreOS update differently, so Fedorable refuses to run on them.
+| Fedora | Package manager | Status |
+| --- | --- | --- |
+| **45** | DNF5 | ✅ Supported and tested |
+| **44** | DNF5 | ✅ Supported and tested |
+| 43 | DNF5 | Should work, not tested |
+| 41–42 | DNF5 | End of life; should work, but not supported |
+| 40 and older | DNF4 | End of life; not supported |
+| Atomic desktops (Silverblue, Kinoite…) and CoreOS | rpm-ostree | ❌ Refused, they update differently |
 
-Dry runs have been tried on Fedora 44 and 45. The tests use fake versions of the system commands, so a full real run on a spare Fedora machine is still worth doing before a release.
+Fedorable runs on regular, DNF-based Fedora Workstation, Server and Spins. It needs Bash 4.4 or newer, coreutils, util-linux, RPM and systemd, which every Fedora install already has. Flatpak and `fstrim` are optional.
+
+Tests use fake versions of the system commands, so a full real run on a spare Fedora machine is still worth doing before a release.
 
 Version 6 replaces the old GUI and Python wrapper with this Bash script. `--all` and the GRUB, firmware, RPM database and user cache tasks are gone, and `--minimal` now only updates packages. Old config files need to be rewritten in the format above.
 

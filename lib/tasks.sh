@@ -100,9 +100,9 @@ task_thumbnails() {
     [[ $target_user =~ ^[a-z_][a-z0-9_-]*$ ]] || { fail 'Could not identify the desktop user.'; return 1; }
     passwd_entry=$(getent passwd "$target_user") || { fail "Could not find user: $target_user"; return 1; }
     IFS=: read -r _ _ uid _ _ user_home _ <<< "$passwd_entry"
-    [[ $uid =~ ^[0-9]+$ ]] && (( uid >= 1000 )) && [[ $user_home == /* && $user_home != / ]] || {
-        fail 'Refusing to clean thumbnails for a system account or unsafe home path.'; return 1;
-    }
+    if ! [[ $uid =~ ^[0-9]+$ && $uid -ge 1000 && $user_home == /* && $user_home != / ]]; then
+        fail 'Refusing to clean thumbnails for a system account or unsafe home path.'; return 1
+    fi
     if [[ ! -d $user_home/.cache/thumbnails ]]; then TASK_NOTE='No desktop thumbnail cache found.'; say "$TASK_NOTE"; return 0; fi
     run_command runuser -u "$target_user" -- find "$user_home/.cache/thumbnails" -type f -delete || return 1
     TASK_NOTE="Cleared thumbnail files for $target_user; thumbnails will regenerate when needed."
