@@ -53,7 +53,7 @@ check_space() {
 
 task_update() {
     check_space || return 1
-    run_command dnf upgrade -y
+    run_command dnf upgrade --refresh -y
 }
 
 task_autoremove() { run_command dnf autoremove -y; }

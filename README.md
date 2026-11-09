@@ -10,7 +10,7 @@
 [![Flatpak](https://img.shields.io/badge/Flatpak-4A90D9?style=plastic&logo=flatpak&logoColor=white)](https://flatpak.org)
 [![systemd](https://img.shields.io/badge/systemd-30D475?style=plastic&logo=linux&logoColor=black)](https://systemd.io)
 
-[![Version](https://img.shields.io/badge/version-6.0.0-blue?style=plastic)](https://github.com/V8V88V8V88/Fedorable/releases)
+[![Version](https://img.shields.io/badge/version-6.1.0-blue?style=plastic)](https://github.com/V8V88V8V88/Fedorable/releases)
 [![Checks](https://img.shields.io/github/actions/workflow/status/V8V88V8V88/Fedorable/check.yml?branch=main&style=plastic&label=checks)](https://github.com/V8V88V8V88/Fedorable/actions/workflows/check.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green?style=plastic)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/V8V88V8V88/Fedorable?style=plastic)](https://github.com/V8V88V8V88/Fedorable/stargazers)
