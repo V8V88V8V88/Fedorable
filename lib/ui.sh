@@ -229,6 +229,7 @@ choose_tasks() {
             3) printf '\n  %s%sCLEANUP & CACHE%s\n' "$BOLD" "$BLUE" "$RESET" ;;
             11) printf '\n  %s%sSTORAGE%s\n' "$BOLD" "$BLUE" "$RESET" ;;
             12) printf '\n  %s%sDIAGNOSTICS%s\n' "$BOLD" "$BLUE" "$RESET" ;;
+            14) printf '\n  %s%sHARDWARE%s\n' "$BOLD" "$BLUE" "$RESET" ;;
         esac
         printf '  %s%2s%s  %-14s %s\n' "$CYAN" "$index" "$RESET" "$task" "$(task_label "$task")"
     done

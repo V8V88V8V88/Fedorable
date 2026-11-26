@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-TASKS=(update flatpak clean-dnf autoremove kernels journal temp clean-flatpak thumbnails coredumps trim boot-report failed)
+TASKS=(update flatpak clean-dnf autoremove kernels journal temp clean-flatpak thumbnails coredumps trim boot-report failed hp-printer)
 
 task_label() {
     case "$1" in
@@ -17,6 +17,7 @@ task_label() {
         trim) printf 'TRIM supported filesystems' ;;
         boot-report) printf 'Show boot time and the critical service chain' ;;
         failed) printf 'Clear failed systemd unit status (does not fix services)' ;;
+        hp-printer) printf 'Install HP printer packages' ;;
     esac
 }
 
@@ -54,6 +55,10 @@ check_space() {
 task_update() {
     check_space || return 1
     run_command dnf upgrade --refresh -y
+}
+
+task_hp_printer() {
+    run_command dnf install -y hplip hplip-gui hplip-common hplip-libs python3-dbus cups-filters system-config-printer
 }
 
 task_autoremove() { run_command dnf autoremove -y; }
@@ -131,7 +136,7 @@ task_failed() { run_command systemctl reset-failed; }
 
 task_dependency() {
     case "$1" in
-        update|autoremove|clean-dnf|kernels) printf dnf ;;
+        update|autoremove|clean-dnf|kernels|hp-printer) printf dnf ;;
         journal) printf journalctl ;;
         temp|coredumps) printf systemd-tmpfiles ;;
         flatpak|clean-flatpak) printf flatpak ;;
@@ -157,6 +162,7 @@ task_outcome() {
         trim) printf 'Free blocks reported to the drive; TRIM does not free disk space.' ;;
         boot-report) printf 'Boot timing and critical service chain displayed; no settings changed.' ;;
         failed) printf 'Failed-unit status cleared; services were not repaired.' ;;
+        hp-printer) printf 'HP printer packages installed. If your model requires the proprietary plugin, run hp-plugin -i separately.' ;;
     esac
 }
 

@@ -75,8 +75,11 @@ In the menu's task picker you can type numbers (`3,4,6`), names (`journal,temp`)
 | `trim` | Runs TRIM, unless Fedora's weekly `fstrim.timer` already does it |
 | `boot-report` | Shows boot time and the slowest services |
 | `failed` | Clears systemd's failed-unit status (it doesn't fix the service) |
+| `hp-printer` | Installs HP printer drivers and Fedora printer setup tools |
 
 Turn any task on or off with `--NAME` or `--no-NAME`, e.g. `fedorable --cleanup --no-kernels`.
+
+For HP printers, run `fedorable --hp-printer` or pick **HP printer packages** under **Hardware** in the task picker. No preset installs these packages. If your printer model requires HP's proprietary plugin, run `hp-plugin -i` separately and review the license before accepting it.
 
 ## Options
 
