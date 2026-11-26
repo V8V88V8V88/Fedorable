@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION=6.1.0
+VERSION=6.2.0
 DRY_RUN=0 YES=0 QUIET=0 CHECK_ONLY=0 EXPLICIT=0
 NO_ANIMATION=0 ELEVATED=0
 CONFIG_FILE='' LOG_FILE=''
@@ -231,6 +231,13 @@ main() {
     check_platform || return 1
     if (( CHECK_ONLY )); then check_updates; return $?; fi
     if (( ${#SELECTED[@]} == 0 )); then say 'No tasks selected. Nothing to do.'; return 0; fi
+    if [[ " ${SELECTED[*]} " == *' anaconda '* ]]; then
+        (( ${#SELECTED[@]} == 1 )) || { fail 'Run Anaconda separately from system tasks: --anaconda.'; return 1; }
+        if (( ! DRY_RUN )); then
+            (( EUID != 0 )) || { fail 'Run --anaconda as your regular user, without sudo.'; return 1; }
+            [[ -t 0 && -t 1 ]] || { fail 'Anaconda needs a terminal for its license and install location prompts.'; return 1; }
+        fi
+    fi
     (( ELEVATED )) || show_plan
     if (( ! DRY_RUN )); then
         if (( ! YES )); then
@@ -238,7 +245,7 @@ main() {
             read -r -p "  ${CYAN}Run this plan? [y/N]:${RESET} " answer || return 1
             case "$answer" in y|Y|yes|YES) ;; *) say 'All right, nothing changed.'; return 0 ;; esac
         fi
-        prepare_run || return 1
+        if [[ ${SELECTED[0]} != anaconda ]]; then prepare_run || return 1; fi
     fi
     execute_tasks
 }

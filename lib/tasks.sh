@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-TASKS=(update flatpak clean-dnf autoremove kernels journal temp clean-flatpak thumbnails coredumps trim boot-report failed hp-printer)
+TASKS=(update flatpak clean-dnf autoremove kernels journal temp clean-flatpak thumbnails coredumps trim boot-report failed hp-printer anaconda)
 
 task_label() {
     case "$1" in
@@ -18,6 +18,7 @@ task_label() {
         boot-report) printf 'Show boot time and the critical service chain' ;;
         failed) printf 'Clear failed systemd unit status (does not fix services)' ;;
         hp-printer) printf 'Install HP printer packages' ;;
+        anaconda) printf 'Install Anaconda Distribution for the current user' ;;
     esac
 }
 
@@ -60,6 +61,23 @@ task_update() {
 task_hp_printer() {
     run_command dnf install -y hplip hplip-gui hplip-common hplip-libs python3-dbus cups-filters system-config-printer
 }
+
+task_anaconda() (
+    local release=Anaconda3-2026.07-1-Linux-x86_64.sh
+    local checksum=9f49042048e9a8220c1cddf9192054290724052d3b2a86f938f9f5edd911db8f
+    local directory='<temporary-directory>' installer
+    [[ $(uname -m) == x86_64 ]] || { fail 'This Anaconda installer requires Linux x86_64.'; return 1; }
+    if (( ! DRY_RUN )); then
+        directory=$(mktemp -d) || return 1
+        trap 'rm -rf -- "$directory"' EXIT
+    fi
+    installer=$directory/$release
+    run_command curl --fail --show-error --location --proto '=https' \
+        --output "$installer" "https://repo.anaconda.com/archive/$release" || return 1
+    say 'Verify the installer SHA-256 before executing it.'
+    run_command sha256sum --check <<< "$checksum  $installer" || return 1
+    run_command bash "$installer"
+)
 
 task_autoremove() { run_command dnf autoremove -y; }
 task_clean_dnf() { run_command dnf clean packages; }
@@ -144,6 +162,7 @@ task_dependency() {
         trim) printf fstrim ;;
         boot-report) printf systemd-analyze ;;
         failed) printf systemctl ;;
+        anaconda) printf curl ;;
     esac
 }
 
@@ -163,6 +182,7 @@ task_outcome() {
         boot-report) printf 'Boot timing and critical service chain displayed; no settings changed.' ;;
         failed) printf 'Failed-unit status cleared; services were not repaired.' ;;
         hp-printer) printf 'HP printer packages installed. If your model requires the proprietary plugin, run hp-plugin -i separately.' ;;
+        anaconda) printf 'Anaconda installer finished; run conda --version in a new terminal after shell initialization.' ;;
     esac
 }
 
