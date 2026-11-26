@@ -140,6 +140,7 @@ show_plan() {
         case "$task" in
             kernels) say "Kernels: keep newest $KERNELS_TO_KEEP plus the running kernel." ;;
             journal) say "Journal: retain $JOURNAL_VACUUM_TIME, up to $JOURNAL_VACUUM_SIZE of archived logs." ;;
+            anaconda) say 'Anaconda: at the install location prompt, press Enter for the default or enter an absolute path.' ;;
             flatpak|clean-flatpak)
                 if (( ! flatpak_note )); then say 'Flatpak: system installation only.'; flatpak_note=1; fi ;;
         esac
@@ -229,6 +230,7 @@ choose_tasks() {
             3) printf '\n  %s%sCLEANUP & CACHE%s\n' "$BOLD" "$BLUE" "$RESET" ;;
             11) printf '\n  %s%sSTORAGE%s\n' "$BOLD" "$BLUE" "$RESET" ;;
             12) printf '\n  %s%sDIAGNOSTICS%s\n' "$BOLD" "$BLUE" "$RESET" ;;
+            14) printf '\n  %s%sSOFTWARE%s\n' "$BOLD" "$BLUE" "$RESET" ;;
         esac
         printf '  %s%2s%s  %-14s %s\n' "$CYAN" "$index" "$RESET" "$task" "$(task_label "$task")"
     done

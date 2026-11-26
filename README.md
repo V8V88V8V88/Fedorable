@@ -75,6 +75,8 @@ In the menu's task picker you can type numbers (`3,4,6`), names (`journal,temp`)
 | `trim` | Runs TRIM, unless Fedora's weekly `fstrim.timer` already does it |
 | `boot-report` | Shows boot time and the slowest services |
 | `failed` | Clears systemd's failed-unit status (it doesn't fix the service) |
+| `hp-printer` | Installs HP printer drivers and Fedora printer setup tools |
+| `anaconda` | Downloads, verifies, and launches the Anaconda Distribution installer for your user |
 
 Turn any task on or off with `--NAME` or `--no-NAME`, e.g. `fedorable --cleanup --no-kernels`.
 
@@ -94,7 +96,7 @@ Turn any task on or off with `--NAME` or `--no-NAME`, e.g. `fedorable --cleanup 
 - You always see the plan before anything runs.
 - The running kernel is never removed, and if the update fails, package and kernel removal are skipped.
 - Flatpak tasks only touch system-wide installs.
-- Only one copy can run at a time, and every run is logged to `/var/log/fedorable/`.
+- Only one system maintenance run can run at a time, and system runs are logged to `/var/log/fedorable/`.
 - Cleanup deletes files and can't be undone.
 
 ## Configuration
